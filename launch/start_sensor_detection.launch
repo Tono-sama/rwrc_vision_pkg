@@ -1,0 +1,26 @@
+<launch>
+    <!-- set argument -->
+    <!-- <arg name="Environment"/> -->
+
+    <!-- sensors id -->
+    <!-- <arg name="sensor_id" default=""/> -->
+
+    <!-- realsense d435 start -->
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch"/>
+
+    <!-- yolo start -->
+    <include file="$(find darknet_ros)/launch/darknet_ros.launch"/>
+
+    <!-- rqt_image_view -->
+    <node name="rqt_image_view" pkg="rqt_image_view" type="rqt_image_view" required="true"/>
+
+    <!-- rosbag record -->
+    <node name="record" pkg="rosbag" type="record" 
+        args="
+            /camera/color/image_raw 
+            /camera/depth/image_rect_raw 
+            /darknet_ros/detection_image
+            /darknet_ros/bounding_boxes 
+            -o /home/xavier_nx_001/data/rosbag/data"/>
+
+</launch>
